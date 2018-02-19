@@ -142,6 +142,39 @@ It has been tested with the following device:
 	- Takes none
 	- Returns void
 
+## Data
+
+- **DrawingObj**
+	- byte register0
+	 	- bits: 0-4 object type, 5-6 Invisible|Visible|Negative|Inverted, 7 Deleted
+	- uint8_t x
+		- will be adjusted to screen coordinates -64 < 192
+	- uint8_t y
+		- will be adjusted to screen coordinates -96 < 160
+	- uint8_t v0
+	 	- depending on object: width, (char/text/bitmap) index
+	- uint8_t v1
+		- depending on object: height, (bitmap) width
+- **DrawingObj Register Values**
+	- object type
+		- LINE_T: single pixel line from point to point
+		- RECT_T: rectangle outline of 1px
+		- RECTFILL_T: filled rectangle
+		- ELLIPSE_T: ellipse outline of 1px
+		- ELLIPSEFILL_T: filled ellipse
+		- CHAR_T: single character (v0 is the value)
+		- TEXT_T: string of text from list in Ease_OLED_I2C_128x64_Strings.h
+		- BITMAP_T: bitmap from list in Ease_OLED_I2C_128x64_Bitmaps.h
+	- drawing type
+		- VISIBLE: draw object as positive, adding pixels to what is already in buffer
+		- NEGATIVE: draw object as negative, deleting pixels from buffer
+		- INVERTED: draw object as opposite of what is existing in buffer
+	- reuse
+		- DELETED: allow reuse of object in buffer
+	- EXAMPLES
+		- LINE_T|VISIBLE: line object, drawn positive
+		- ELLIPSEFILL_T|INVERTED: filled ellipse, drawn inverted
+
 ## License
 
 This library is licensed under the GNU GPLv3 (https://www.gnu.org/licenses/gpl.html) open source license.

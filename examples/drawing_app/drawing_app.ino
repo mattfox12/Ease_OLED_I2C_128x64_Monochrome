@@ -212,9 +212,9 @@ void loop() {
 	if (justPressed(BUTTON)) change_bitmap(cursor_x, cursor_y, -1);
 
 	// uncomment next three lines to see rendering optimization
-	//  delay(1000);
 	//  lcd.clear();
 	//  lcd.showBuffer();
+	//  delay(1000);
 
 	// draw to screan
 	lcd.draw();

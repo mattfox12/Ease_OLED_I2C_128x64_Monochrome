@@ -47,6 +47,8 @@ void loop() {
 		int8_t newY = objs[hello_index].data.y;
     	if (newY == 17 || newY == 64 - objs[hello_index].data.v1) h_dir_y *= -1;
 		newY += h_dir_y;
+
+		// use updateObj to be sure buffers are correctly redrawn
 		lcd.updateObj(hello_index, newX, newY);
 	}
 	if (world_index >= 0) {
@@ -56,6 +58,8 @@ void loop() {
 		int8_t newY = objs[world_index].data.y;
     	if (newY == 17 || newY == 64 - objs[world_index].data.v1) w_dir_y *= -1;
 		newY += w_dir_y;
+
+		// use updateObj to be sure buffers are correctly redrawn
 		lcd.updateObj(world_index, newX, newY);
 	}
 

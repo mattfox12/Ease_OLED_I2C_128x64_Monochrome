@@ -41,6 +41,8 @@ void loop() {
 		int8_t newY = objs[item_index].data.y;
     	if (newY == 17 || newY == 64 - objs[item_index].data.v1) dirY *= -1;
 		newY += dirY;
+
+		// use updateObj to be sure buffers are correctly redrawn
 		lcd.updateObj(item_index, newX, newY); // optional: add width, height values as well
 	}
 

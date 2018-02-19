@@ -36,6 +36,8 @@ void loop() {
 		int8_t newY = objs[bitmap_index].data.y;
     	if (newY == 17 || newY == 64 - lcd.bufferBitmapHeight(bitmap_index,objs[bitmap_index].data.v1)) dirY *= -1;
 		newY += dirY;
+
+		// use updateObj to be sure buffers are correctly redrawn
 		lcd.updateObj(bitmap_index, newX, newY);
 	}
 
