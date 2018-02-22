@@ -25,8 +25,8 @@ void setup() {
 	// item.data.register0 = LINE_T | VISIBLE;
 	item.data.x = 4;
 	item.data.y = 20;
-	item.data.v0 = 18; // width
-	item.data.v1 = 18; // height
+	item.data.w = 18; // width
+	item.data.v = 18; // height
 	item_index = lcd.addObj(item); // pass in DrawingObj, values copied to 1st available, returns index
 
 	lcd.draw();
@@ -36,10 +36,10 @@ void loop() {
 	// update object position
 	if (item_index >= 0) {
 		int8_t newX = objs[item_index].data.x;
-    	if (newX == 0 || newX == 128 - objs[item_index].data.v0) dirX *= -1;
+    	if (newX == 0 || newX == 128 - objs[item_index].data.w) dirX *= -1;
 		newX += dirX;
 		int8_t newY = objs[item_index].data.y;
-    	if (newY == 17 || newY == 64 - objs[item_index].data.v1) dirY *= -1;
+    	if (newY == 17 || newY == 64 - objs[item_index].data.v) dirY *= -1;
 		newY += dirY;
 
 		// use updateObj to be sure buffers are correctly redrawn

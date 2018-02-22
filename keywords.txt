@@ -70,3 +70,4 @@ clear							KEYWORD2
 
 string_table					LITERAL1
 bitmap_table					LITERAL1
+bitmap_table_index				LITERAL1

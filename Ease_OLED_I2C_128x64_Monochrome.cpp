@@ -146,15 +146,15 @@ void Display::updateObj(uint16_t index, uint8_t x, uint8_t y) {
 	updateObjBuffer(index);
 }
 
-void Display::updateObj(uint16_t index, uint8_t x, uint8_t y, uint8_t v0, uint8_t v1) {
+void Display::updateObj(uint16_t index, uint8_t x, uint8_t y, uint8_t w, uint8_t v) {
 	// redraw old spot
 	updateObjBuffer(index);
 
 	// set new values
 	drawingObjs[index].data.x 	= x;
 	drawingObjs[index].data.y 	= y;
-	drawingObjs[index].data.v0 	= v0;
-	drawingObjs[index].data.v1 	= v1;
+	drawingObjs[index].data.w 	= w;
+	drawingObjs[index].data.v 	= v;
 
 	// redraw new spot
 	updateObjBuffer(index);
@@ -178,11 +178,8 @@ void Display::updateBitmapBuffer(uint16_t index) {
 	int16_t startY = drawingObjs[index].data.y;
 	if (startY > 192) startY -= 256;
 
-	// load buffer with string text
-	int8_t bitmap_index = drawingObjs[index].data.v0;
-
-	int8_t width = drawingObjs[index].data.v1;
-	int16_t height = bufferBitmapHeight(index, width);
+	int8_t width = drawingObjs[index].data.w;
+	int16_t height = bufferBitmapHeight(drawingObjs[index].data.v, width);
 
 	// square for now
 	for (byte x = max(0,floor(startX/8)*8); x < startX+width; x+=8) {
@@ -199,11 +196,11 @@ void Display::updateTextBuffer(uint16_t index) {
 	if (startY > 192) startY -= 256;
 
 	// load buffer with string text
-	int8_t string_index = drawingObjs[index].data.v0;
+	int8_t string_index = drawingObjs[index].data.v;
 	strcpy_P(buffer, (char*)pgm_read_word(&(string_table[string_index]))); // Necessary casts and dereferencing, just copy.
 
 	int16_t width = bufferTextWidth(); // increase with the chars given
-	int16_t height = drawingObjs[index].data.v1;
+	int16_t height = 8; // TODO: allow wrap based on a given width
 
 	// square for now
 	for (byte x = max(0,floor(startX/8)*8); x < startX+width; x+=8) {
@@ -219,10 +216,10 @@ void Display::updateCharBuffer(uint16_t index) {
 	int16_t startY = drawingObjs[index].data.y;
 	if (startY > 192) startY -= 256;
 
-	byte pChar = drawingObjs[index].data.v0;
+	byte pChar = drawingObjs[index].data.v;
 
 	uint8_t width = charWidth(pChar);
-	uint8_t height = drawingObjs[index].data.v1;
+	uint8_t height = 8;
 
 	// square for now
 	for (byte x = max(0,floor(startX/8)*8); x < startX+width; x+=8) {
@@ -237,9 +234,9 @@ void Display::updateRectBuffer(uint16_t index, boolean filled) {
 	if (startX > 192) startX -= 256;
 	int16_t startY = drawingObjs[index].data.y;
 	if (startY > 192) startY -= 256;
-	int16_t width = drawingObjs[index].data.v0;
+	int16_t width = drawingObjs[index].data.w;
 	if (width > 160) width -= 256;
-	int16_t height = drawingObjs[index].data.v1;
+	int16_t height = drawingObjs[index].data.v;
 	if (height > 160) height -= 256;
 
 	// use int for comparison, or int8_t may wrap to negative
@@ -267,10 +264,10 @@ void Display::updateLineBuffer(uint16_t index) {
 	if (x0 > 192) x0 -= 256;
 	int16_t y0 = drawingObjs[index].data.y;
 	if (y0 > 192) y0 -= 256;
-	int16_t x1 = drawingObjs[index].data.v0;
+	int16_t x1 = drawingObjs[index].data.w;
 	if (x1 > 160) x1 -= 256;
 	x1 += x0;
-	int16_t y1 = drawingObjs[index].data.v1;
+	int16_t y1 = drawingObjs[index].data.v;
 	if (y1 > 160) y1 -= 256;
 	y1 += y0;
 
@@ -451,10 +448,10 @@ void Display::renderLine(uint16_t index, uint8_t bufX, uint8_t bufY) {
 	if (x0 > 192) x0 -= 256;
 	int16_t y0 = drawingObjs[index].data.y;
 	if (y0 > 192) y0 -= 256;
-	int16_t x1 = drawingObjs[index].data.v0;
+	int16_t x1 = drawingObjs[index].data.w;
 	if (x1 > 160) x1 -= 256;
 	x1 += x0;
-	int16_t y1 = drawingObjs[index].data.v1;
+	int16_t y1 = drawingObjs[index].data.v;
 	if (y1 > 160) y1 -= 256;
 	y1 += y0;
 
@@ -524,9 +521,9 @@ void Display::renderRect(uint16_t index, uint8_t bufX, uint8_t bufY, boolean fil
 	if (startX > 192) startX -= 256;
 	int16_t startY = drawingObjs[index].data.y;
 	if (startY > 192) startY -= 256;
-	int16_t width = drawingObjs[index].data.v0;
+	int16_t width = drawingObjs[index].data.w;
 	if (width > 160) width -= 256;
-	int16_t height = drawingObjs[index].data.v1;
+	int16_t height = drawingObjs[index].data.v;
 	if (height > 160) height -= 256;
 
 	for (byte i=0; i<8; i++) {
@@ -561,12 +558,12 @@ void Display::renderEllipse(uint16_t index, uint8_t bufX, uint8_t bufY, boolean 
 	if (startX > 192) startX -= 256;
 	int16_t startY = drawingObjs[index].data.y;
 	if (startY > 192) startY -= 256;
-	int16_t rx = drawingObjs[index].data.v0/2;
-	int16_t ry = drawingObjs[index].data.v1/2;
+	int16_t rx = drawingObjs[index].data.w/2;
+	int16_t ry = drawingObjs[index].data.v/2;
 	int8_t offsetX = 0;
-	if (drawingObjs[index].data.v0 % 2 == 0) offsetX = 1;
+	if (drawingObjs[index].data.w % 2 == 0) offsetX = 1;
 	int8_t offsetY = 0;
-	if (drawingObjs[index].data.v1 % 2 == 0) offsetY = 1;
+	if (drawingObjs[index].data.v % 2 == 0) offsetY = 1;
 	startX += rx;
 	startY += ry;
 
@@ -724,10 +721,10 @@ void Display::renderChar(uint16_t index, uint8_t bufX, uint8_t bufY) {
 	int16_t startY = drawingObjs[index].data.y;
 	if (startY > 192) startY -= 256;
 
-	byte pChar = drawingObjs[index].data.v0;
+	byte pChar = drawingObjs[index].data.v;
 
 	// byte width = charWidth(pChar);
-	byte height = drawingObjs[index].data.v1;
+	uint8_t height = 8;
 
 	renderChar(pChar, startX, startY, height, negative, inverted, bufX, bufY);
 }
@@ -763,7 +760,7 @@ void Display::renderChar(uint8_t givenChar, int16_t x, int16_t y, uint8_t height
 
 void Display::renderBufferText(uint16_t index, uint8_t bufX, uint8_t bufY) {
 	// load buffer with string text
-	int8_t string_index = drawingObjs[index].data.v0;
+	int8_t string_index = drawingObjs[index].data.v;
 	strcpy_P(buffer, (char*)pgm_read_word(&(string_table[string_index]))); // Necessary casts and dereferencing, just copy.
 
 	bool negative = false;
@@ -777,7 +774,7 @@ void Display::renderBufferText(uint16_t index, uint8_t bufX, uint8_t bufY) {
 	if (startY > 192) startY -= 256;
 
 	int16_t width = 0; // increase with the chars given
-	int16_t height = drawingObjs[index].data.v1;
+	int16_t height = 8; // TODO: allow wrap based on a given width
 
 	byte i = 0;
     while(buffer[i] && i < sizeof(buffer)) {
@@ -790,7 +787,7 @@ void Display::renderBufferText(uint16_t index, uint8_t bufX, uint8_t bufY) {
 }
 
 void Display::renderBufferBitmap(uint16_t index, uint8_t bufX, uint8_t bufY) {
-	int8_t bitmap_index = drawingObjs[index].data.v0;
+	uint8_t bitmap_index = pgm_read_byte(&bitmap_table_index[drawingObjs[index].data.v][0]);
 
 	bool negative = false;
 	bool inverted = false;
@@ -802,8 +799,8 @@ void Display::renderBufferBitmap(uint16_t index, uint8_t bufX, uint8_t bufY) {
 	int16_t startY = drawingObjs[index].data.y;
 	if (startY > 192) startY -= 256;
 
-	int16_t width = drawingObjs[index].data.v1; // increase with the chars given
-	int16_t height = bufferBitmapHeight(index, drawingObjs[index].data.v1);
+	int16_t width = drawingObjs[index].data.w; // increase with the chars given
+	int16_t height = bufferBitmapHeight(drawingObjs[index].data.v, drawingObjs[index].data.w);
 
 	int16_t x = bufX * 8 - startX;
 	int16_t y = bufY * 8 - startY;
@@ -815,15 +812,14 @@ void Display::renderBufferBitmap(uint16_t index, uint8_t bufX, uint8_t bufY) {
 
 		// check within x
 		if (offset + i >= 0 && (uint8_t)(x + i) >= 0 && (uint8_t)(x + i) < width) {
-
-			byte currentByte = pgm_read_byte(&bitmap_table[bitmap_index][offset + i]);
+			byte currentByte = pgm_read_byte(&bitmap_table[bitmap_index + offset + i]);
 			for (uint8_t j=0; j<8; j++) {
 				// check within y
 				if ((uint8_t)(y + j) >= 0 && (uint8_t)(y + j) < height) {
 					// check if we need a new byte
 					if (y % 8 > 0 && (y + j) % 8 == 0) {
 						offset += width;
-						currentByte = pgm_read_byte(&bitmap_table[bitmap_index][offset + i]);
+						currentByte = pgm_read_byte(&bitmap_table[bitmap_index + offset + i]);
 					}
 
 					// draw
@@ -947,15 +943,11 @@ uint16_t Display::textWidth(const char *givenString) {
 	return width;
 }
 
-uint16_t Display::bufferBitmapHeight(uint16_t bitmap_index, uint8_t width) {
-	uint16_t h = 0;
-	uint16_t i = 0;
-	byte buf;
-    while (buf = pgm_read_byte(&bitmap_table[bitmap_index][i])) {
-      	if (i % width == 0) h++;
-      	i++;
-    }
-	return h*8;
+uint16_t Display::bufferBitmapHeight(uint16_t index, uint8_t width) {
+	byte len = pgm_read_byte(&bitmap_table_index[index][1]);
+	uint16_t h = len / width;
+	if (len % width > 0) h++;
+	return h * 8;
 }
 
 void Display::drawTileBuffer() {

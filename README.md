@@ -71,8 +71,8 @@ It has been tested with the following device:
 		- uint16_t: index
 		- uint8_t: x
 		- uint8_t: y
-		- uint8_t: v0
-		- uint8_t: v1
+		- uint8_t: w
+		- uint8_t: v
 	- Returns void
 
 - **setBuffer**
@@ -151,10 +151,10 @@ It has been tested with the following device:
 		- will be adjusted to screen coordinates -64 < 192
 	- uint8_t y
 		- will be adjusted to screen coordinates -96 < 160
-	- uint8_t v0
-	 	- depending on object: width, (char/text/bitmap) index
-	- uint8_t v1
-		- depending on object: height, (bitmap) width
+	- uint8_t w
+	 	- width
+	- uint8_t v
+		- depending on object: height, (char/text/bitmap) index
 - **DrawingObj Register Values**
 	- object type
 		- LINE_T: single pixel line from point to point
@@ -162,7 +162,7 @@ It has been tested with the following device:
 		- RECTFILL_T: filled rectangle
 		- ELLIPSE_T: ellipse outline of 1px
 		- ELLIPSEFILL_T: filled ellipse
-		- CHAR_T: single character (v0 is the value)
+		- CHAR_T: single character (v is the value)
 		- TEXT_T: string of text from list in Ease_OLED_I2C_128x64_Strings.h
 		- BITMAP_T: bitmap from list in Ease_OLED_I2C_128x64_Bitmaps.h
 	- drawing type

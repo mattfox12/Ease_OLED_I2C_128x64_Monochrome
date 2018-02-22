@@ -70,8 +70,8 @@ typedef struct drawData_t {
 	byte register0; // bits: 0-4 object type, 5-6 Invisible|Visible|Negative|Inverted, 7 Deleted
 	uint8_t x; // will be adjusted to screen coordinates -64 < 192
 	uint8_t y; // will be adjusted to screen coordinates -96 < 160
-	uint8_t v0; // depending on object: width, (char/text/bitmap) index
-	uint8_t v1; // depending on object: height, (bitmap) width
+	uint8_t w; // depending on object: width
+	uint8_t v; // depending on object: height, (char/text/bitmap) index
 };
 typedef union DrawingObj{
   drawData_t data;
@@ -110,7 +110,7 @@ class Display {
 		uint16_t addObj(DrawingObj givenObj);
 		void updateObjStyle(uint16_t index, uint8_t v);
 		void updateObj(uint16_t index, uint8_t x, uint8_t y);
-		void updateObj(uint16_t index, uint8_t x, uint8_t y, uint8_t v0, uint8_t v1);
+		void updateObj(uint16_t index, uint8_t x, uint8_t y, uint8_t w, uint8_t v);
 
 		// force buffer location to redraw
 		void setBuffer(uint8_t bufX = 255, uint8_t bufY = 255); // set render buffer to true

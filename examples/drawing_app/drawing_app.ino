@@ -49,24 +49,24 @@ void setup() {
 	header.data.register0 = RECTFILL_T | VISIBLE;
 	header.data.x = 8;
 	header.data.y = 0;
-	header.data.v0 = 112; // width
-	header.data.v1 = 16; // height
+	header.data.w = 112; // width
+	header.data.v = 16; // height
 	lcd.addObj(header);
 
 	DrawingObj headerL;
 	headerL.data.register0 = ELLIPSEFILL_T | VISIBLE;
 	headerL.data.x = 0;
 	headerL.data.y = 0;
-	headerL.data.v0 = 16; // width
-	headerL.data.v1 = 16; // height
+	headerL.data.w = 16; // width
+	headerL.data.v = 16; // height
 	lcd.addObj(headerL);
 
 	DrawingObj headerR;
 	headerR.data.register0 = ELLIPSEFILL_T | VISIBLE;
 	headerR.data.x = 112;
 	headerR.data.y = 0;
-	headerR.data.v0 = 16; // width
-	headerR.data.v1 = 16; // height
+	headerR.data.w = 16; // width
+	headerR.data.v = 16; // height
 	lcd.addObj(headerR);
 
 	// DRAWING AREA
@@ -74,16 +74,16 @@ void setup() {
 	border.data.register0 = RECTFILL_T | VISIBLE;
 	border.data.x = 18;
 	border.data.y = 19;
-	border.data.v0 = 45; // width
-	border.data.v1 = 45; // height
+	border.data.w = 45; // width
+	border.data.v = 45; // height
 	lcd.addObj(border);
 
 	DrawingObj stage;
 	stage.data.register0 = RECTFILL_T | NEGATIVE;
 	stage.data.x = 20;
 	stage.data.y = 21;
-	stage.data.v0 = 41; // width
-	stage.data.v1 = 41; // height
+	stage.data.w = 41; // width
+	stage.data.v = 41; // height
 	lcd.addObj(stage);
 
 	// NEGATIVE PREVIEW
@@ -91,32 +91,32 @@ void setup() {
 	double_neg_bg.data.register0 = RECTFILL_T | VISIBLE;
 	double_neg_bg.data.x = 78;
 	double_neg_bg.data.y = 42;
-	double_neg_bg.data.v0 = 20; // width
-	double_neg_bg.data.v1 = 20; // height
+	double_neg_bg.data.w = 20; // width
+	double_neg_bg.data.v = 20; // height
 	lcd.addObj(double_neg_bg);
 
 	DrawingObj neg_bg;
 	neg_bg.data.register0 = RECTFILL_T | VISIBLE;
 	neg_bg.data.x = 102;
 	neg_bg.data.y = 46;
-	neg_bg.data.v0 = 12; // width
-	neg_bg.data.v1 = 12; // height
+	neg_bg.data.w = 12; // width
+	neg_bg.data.v = 12; // height
 	lcd.addObj(neg_bg);
 
 	DrawingObj line0;
 	line0.data.register0 = LINE_T | VISIBLE;
-	line0.data.x = double_neg_bg.data.x + double_neg_bg.data.v0 - 1;
+	line0.data.x = double_neg_bg.data.x + double_neg_bg.data.w - 1;
 	line0.data.y = double_neg_bg.data.y;
-	line0.data.v0 = neg_bg.data.x + neg_bg.data.v0 - line0.data.x - 1; // width
-	line0.data.v1 = neg_bg.data.y - line0.data.y; // height
+	line0.data.w = neg_bg.data.x + neg_bg.data.w - line0.data.x - 1; // width
+	line0.data.v = neg_bg.data.y - line0.data.y; // height
 	lcd.addObj(line0);
 
 	DrawingObj line1;
 	line1.data.register0 = LINE_T | VISIBLE;
 	line1.data.x = line0.data.x;
-	line1.data.y = double_neg_bg.data.y + double_neg_bg.data.v1 - 1;
-	line1.data.v0 = line0.data.v0; // width
-	line1.data.v1 = neg_bg.data.y + neg_bg.data.v1 - line1.data.y; // height
+	line1.data.y = double_neg_bg.data.y + double_neg_bg.data.v - 1;
+	line1.data.w = line0.data.w; // width
+	line1.data.v = neg_bg.data.y + neg_bg.data.v - line1.data.y; // height
 	lcd.addObj(line1);
 
 	// draw squares based on bitmap bytes
@@ -127,8 +127,8 @@ void setup() {
 			else pixel.data.register0 = RECTFILL_T;
 			pixel.data.x = 21 + x * 5;
 			pixel.data.y = 22 + y * 5;
-			pixel.data.v0 = 4; // width
-			pixel.data.v1 = 4; // height
+			pixel.data.w = 4; // width
+			pixel.data.v = 4; // height
 			uint16_t index = lcd.addObj(pixel);
 
 			// save start index for bitmap squares
@@ -141,8 +141,8 @@ void setup() {
 	_cursor.data.register0 = RECT_T | INVERTED;
 	_cursor.data.x = 20 + cursor_x * 5;
 	_cursor.data.y = 21 + cursor_y * 5;
-	_cursor.data.v0 = 6; // width
-	_cursor.data.v1 = 6; // height
+	_cursor.data.w = 6; // width
+	_cursor.data.v = 6; // height
 	cursor_index = lcd.addObj(_cursor);
 
 	lcd.draw();
@@ -204,7 +204,7 @@ void loop() {
 			if ((INVERTED & objs[cursor_index].data.register0) == INVERTED) lcd.updateObjStyle(cursor_index, 0);
 			else lcd.updateObjStyle(cursor_index, INVERTED);
 
-			lcd.updateObj(cursor_index, objs[cursor_index].data.x, objs[cursor_index].data.y, objs[cursor_index].data.v0, objs[cursor_index].data.v1);
+			lcd.updateObj(cursor_index, objs[cursor_index].data.x, objs[cursor_index].data.y, objs[cursor_index].data.w, objs[cursor_index].data.v);
 			blink_timer = BLINK_TIME;
 		}
 	}

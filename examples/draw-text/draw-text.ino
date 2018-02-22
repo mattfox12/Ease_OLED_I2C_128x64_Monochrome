@@ -23,16 +23,14 @@ void setup() {
 	hello.data.register0 = TEXT_T | INVERTED;
 	hello.data.x = 4;
 	hello.data.y = 20;
-	hello.data.v0 = 0; // string_table index, see: Ease_OLED_I2C_128x64_Strings.h
-	hello.data.v1 = 8; // height, TODO: maybe change to wrap width?
+	hello.data.v = 0; // string_table index, see: Ease_OLED_I2C_128x64_Strings.h
 	hello_index = lcd.addObj(hello); // pass in DrawingObj, values copied to 1st available, returns index
 
 	DrawingObj world;
 	world.data.register0 = TEXT_T | INVERTED;
 	world.data.x = 5;
 	world.data.y = 28;
-	world.data.v0 = 1; // string_table index, see: Ease_OLED_I2C_128x64_Strings.h
-	world.data.v1 = 8; // height, TODO: maybe change to wrap width?
+	world.data.v = 1; // string_table index, see: Ease_OLED_I2C_128x64_Strings.h
 	world_index = lcd.addObj(world); // pass in DrawingObj, values copied to 1st available, returns index
 
 	lcd.draw();
@@ -45,7 +43,7 @@ void loop() {
     	if (newX == 0 || newX == 128 - lcd.bufferTextWidth(hello_index)) h_dir_x *= -1;
 		newX += h_dir_x;
 		int8_t newY = objs[hello_index].data.y;
-    	if (newY == 17 || newY == 64 - objs[hello_index].data.v1) h_dir_y *= -1;
+    	if (newY == 17 || newY == 64 - 8) h_dir_y *= -1;
 		newY += h_dir_y;
 
 		// use updateObj to be sure buffers are correctly redrawn
@@ -56,7 +54,7 @@ void loop() {
     	if (newX == 0 || newX == 128 - lcd.bufferTextWidth(world_index)) w_dir_x *= -1;
 		newX += w_dir_x;
 		int8_t newY = objs[world_index].data.y;
-    	if (newY == 17 || newY == 64 - objs[world_index].data.v1) w_dir_y *= -1;
+    	if (newY == 17 || newY == 64 - 8) w_dir_y *= -1;
 		newY += w_dir_y;
 
 		// use updateObj to be sure buffers are correctly redrawn
