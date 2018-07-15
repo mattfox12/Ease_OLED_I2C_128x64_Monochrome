@@ -6,68 +6,68 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-DrawingObj						KEYWORD1
-Display							KEYWORD1
+DrawingObj	KEYWORD1
+Display	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-init							KEYWORD2
-sendCommand						KEYWORD2
-sendData						KEYWORD2
-setCursor						KEYWORD2
-setBlackBackground				KEYWORD2
-setWhiteBackground				KEYWORD2
-setDisplayOff					KEYWORD2
-setDisplayOn					KEYWORD2
-setPageMode						KEYWORD2
-setHorizontalMode				KEYWORD2
-setBrightness					KEYWORD2
-rotateDisplay180				KEYWORD2
-addObj							KEYWORD2
-updateObjStyle					KEYWORD2
-updateObj						KEYWORD2
-updateObj						KEYWORD2
-updateObjBuffer					KEYWORD2
-updateEllipseBuffer				KEYWORD2
-updateRectBuffer				KEYWORD2
-updateLineBuffer				KEYWORD2
-updateCharBuffer				KEYWORD2
-updateTextBuffer				KEYWORD2
-updateBitmapBuffer				KEYWORD2
-setBuffer						KEYWORD2
-showBuffer						KEYWORD2
-draw							KEYWORD2
-drawText						KEYWORD2
-drawBitmap						KEYWORD2
-drawTileBuffer					KEYWORD2
-renderTile						KEYWORD2
-renderLine						KEYWORD2
-renderRect						KEYWORD2
-renderEllipse					KEYWORD2
-plotFilledEllipsePoints			KEYWORD2
-plot4EllipsePoints				KEYWORD2
-putPixel						KEYWORD2
-renderChar						KEYWORD2
-renderChar						KEYWORD2
-renderBufferText				KEYWORD2
-renderBufferBitmap				KEYWORD2
-renderText						KEYWORD2
-renderBitmap					KEYWORD2
-charWidth						KEYWORD2
-bufferTextWidth					KEYWORD2
-bufferTextWidth					KEYWORD2
-textWidth						KEYWORD2
-bufferBitmapHeight				KEYWORD2
-clearTileBuffer					KEYWORD2
-clearBuffer						KEYWORD2
-clear							KEYWORD2
+init	KEYWORD2
+sendCommand	KEYWORD2
+sendData	KEYWORD2
+setCursor	KEYWORD2
+setBlackBackground	KEYWORD2
+setWhiteBackground	KEYWORD2
+setDisplayOff	KEYWORD2
+setDisplayOn	KEYWORD2
+setPageMode	KEYWORD2
+setHorizontalMode	KEYWORD2
+setBrightness	KEYWORD2
+rotateDisplay180	KEYWORD2
+addObj	KEYWORD2
+updateObjStyle	KEYWORD2
+updateObj	KEYWORD2
+updateObj	KEYWORD2
+updateObjBuffer	KEYWORD2
+updateEllipseBuffer	KEYWORD2
+updateRectBuffer	KEYWORD2
+updateLineBuffer	KEYWORD2
+updateCharBuffer	KEYWORD2
+updateTextBuffer	KEYWORD2
+updateBitmapBuffer	KEYWORD2
+setBuffer	KEYWORD2
+showBuffer	KEYWORD2
+draw	KEYWORD2
+drawText	KEYWORD2
+drawBitmap	KEYWORD2
+drawTileBuffer	KEYWORD2
+renderTile	KEYWORD2
+renderLine	KEYWORD2
+renderRect	KEYWORD2
+renderEllipse	KEYWORD2
+plotFilledEllipsePoints	KEYWORD2
+plot4EllipsePoints	KEYWORD2
+putPixel	KEYWORD2
+renderChar	KEYWORD2
+renderChar	KEYWORD2
+renderBufferText	KEYWORD2
+renderBufferBitmap	KEYWORD2
+renderText	KEYWORD2
+renderBitmap	KEYWORD2
+charWidth	KEYWORD2
+bufferTextWidth	KEYWORD2
+bufferTextWidth	KEYWORD2
+textWidth	KEYWORD2
+bufferBitmapHeight	KEYWORD2
+clearTileBuffer	KEYWORD2
+clearBuffer	KEYWORD2
+clear	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
 
-string_table					LITERAL1
-bitmap_table					LITERAL1
-bitmap_table_index				LITERAL1
+string_table	LITERAL1
+bitmap_table	LITERAL1
+bitmap_table_index	LITERAL1
