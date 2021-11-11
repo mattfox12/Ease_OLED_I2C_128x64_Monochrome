@@ -60,23 +60,24 @@
 #define CHAR_T 0x06
 #define TEXT_T 0x07
 #define BITMAP_T 0x08
+#define HEXAGON_T 0x09
 #define VISIBLE 0x20 // bit 5
 #define NEGATIVE 0x40 // bit 6
 #define INVERTED 0x60 // bit 5 & 6
 #define DELETED 0x80 // bit 7
 
 // DrawingObj: 5 bytes for drawing objects to screen, dimensions in pixels
-typedef struct drawData_t {
+typedef struct {
 	byte register0; // bits: 0-4 object type, 5-6 Invisible|Visible|Negative|Inverted, 7 Deleted
 	uint8_t x; // will be adjusted to screen coordinates -64 < 192
 	uint8_t y; // will be adjusted to screen coordinates -96 < 160
 	uint8_t w; // depending on object: width
 	uint8_t v; // depending on object: height, (char/text/bitmap) index
-};
-typedef union DrawingObj{
+} drawData_t;
+typedef union {
   drawData_t data;
   byte bytes[sizeof(drawData_t)];
-};
+} DrawingObj;
 
 
 class Display {
@@ -108,6 +109,7 @@ class Display {
 
 		// objects to draw
 		uint16_t addObj(DrawingObj givenObj);
+		uint16_t addObj(byte register0, uint8_t x, uint8_t y, uint8_t w, uint8_t v);
 		void updateObjStyle(uint16_t index, uint8_t v);
 		void updateObj(uint16_t index, uint8_t x, uint8_t y);
 		void updateObj(uint16_t index, uint8_t x, uint8_t y, uint8_t w, uint8_t v);

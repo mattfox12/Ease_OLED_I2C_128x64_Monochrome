@@ -3,8 +3,8 @@
 This is a library for an 0,96" monochrome organic liquid crystal display (128x64 pixels)
 It is modified from https://github.com/deloarts/OLED_I2C_128x64_Monochrome_Library and was created
 to allow pixel perfect drawing at low memory cost, as well as tighter font usage.
-It has been tested with the following device:
-	- 0,96" I2C OLED, Manufacturer: Heltec-Taobao on ATmega 328P
+It has been tested with the following devices:
+	- 0,96" I2C OLED, Manufacturer: Heltec-Taobao on ATmega 328P, ESP32
 
 ## Commands
 
@@ -54,6 +54,14 @@ It has been tested with the following device:
 - **addObj**
 	- Takes
 		- DrawingObj: object to render
+	- Returns uint16_t: index of object
+- **addObj**
+	- Takes
+		- byte: register
+		- uint8_t: x
+		- uint8_t: y
+		- uint8_t: w
+		- uint8_t: v
 	- Returns uint16_t: index of object
 - **updateObjStyle**
 	- Takes

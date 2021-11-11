@@ -3,7 +3,7 @@
 // #############################################################################
 // 5x8 Font ASCII 32 - 127 Implemented
 
-PROGMEM const char* const char_table[][5] = {
+const PROGMEM unsigned char char_table[][5] = {
 	{0x00,0x00,0x00,0x00,0x00}, // space
 	{0x5F,0x00,0x00,0x00,0x00},	// !
 	{0x07,0x07,0x00,0x00,0x00},	// "

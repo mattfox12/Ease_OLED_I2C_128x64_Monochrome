@@ -3,7 +3,16 @@
 #include "Ease_OLED_I2C_128x64_Strings.h"
 #include "Ease_OLED_I2C_128x64_Bitmaps.h"
 #include <Wire.h>
-#include <avr/pgmspace.h>
+#include <Arduino.h>
+// #if (defined(__AVR__))
+// #include <avr\pgmspace.h>
+// #else
+// #include <pgmspace.h>
+// #endif
+
+#ifndef max
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#endif
 
 Display::Display(DrawingObj objs[], uint16_t count){
 	drawingObjs = objs;
@@ -14,12 +23,13 @@ void Display::init(boolean regulator) {
 	Wire.begin();
 	// upgrade to 400KHz! (only use it when all other i2c devices support that speed)
 	if (I2C_400KHZ) {
-		byte twbrbackup = TWBR;
-		TWBR = 12;
+		// byte twbrbackup = TWBR;
+		// TWBR = 12;
+		Wire.setClock(400000L);
 	}
 
 	if (regulator) {
-    	sendCommand(COMMAND_CHARGE_PUMP_SETTING);
+  	sendCommand(COMMAND_CHARGE_PUMP_SETTING);
 		sendCommand(COMMAND_CHARGE_PUMP_ENABLE);
 	}
 
@@ -33,11 +43,11 @@ void Display::init(boolean regulator) {
 	clearBuffer();
 
 	setDisplayOff();
-    setBlackBackground();
+  setBlackBackground();
 	setPageMode();
 	// setHorizontalMode();
 	clear();
-    setDisplayOn();
+  setDisplayOn();
 }
 
 void Display::sendCommand(byte command) {
@@ -57,8 +67,8 @@ void Display::sendData(byte data) {
 void Display::setCursor(byte posX, byte posY) {
 	// X - 1 unit = 8 pixel columns
 	// Y - 1 unit = 1 page (8 pixel rows)
-    sendCommand(0x00 + (8 * posX & 0x0F)); // set column lower address
-    sendCommand(0x10 + ((8 * posX >> 4) & 0x0F)); // set column higher address
+	sendCommand(0x00 + (8 * posX & 0x0F)); // set column lower address
+	sendCommand(0x10 + ((8 * posX >> 4) & 0x0F)); // set column higher address
 	sendCommand(0xB0 + posY); // set page address
 }
 
@@ -108,6 +118,31 @@ uint16_t Display::addObj(DrawingObj givenObj) {
 			for (uint16_t j=0; j<sizeof(DrawingObj); j++) {
 				drawingObjs[i].bytes[j] = givenObj.bytes[j];
 			}
+
+			// set to not deleted
+			bitClear(drawingObjs[i].data.register0, 7);
+
+			// redraw within object bounds
+			updateObjBuffer(i);
+
+			returnValue = i;
+			i = drawingCount; // exit loop
+		}
+	}
+
+	return returnValue;
+}
+
+uint16_t Display::addObj(byte register0, uint8_t x, uint8_t y, uint8_t w, uint8_t v) {
+	int16_t returnValue = -1;
+	for (uint16_t i=0; i<drawingCount; i++) {
+		// find first obj that is ready to be reused
+		if (bitRead(drawingObjs[i].data.register0, 7)) {
+			drawingObjs[i].bytes[0] = register0;
+			drawingObjs[i].bytes[1] = x;
+			drawingObjs[i].bytes[2] = y;
+			drawingObjs[i].bytes[3] = w;
+			drawingObjs[i].bytes[4] = v;
 
 			// set to not deleted
 			bitClear(drawingObjs[i].data.register0, 7);
@@ -393,7 +428,7 @@ void Display::drawText(const char *givenString, int16_t X, int16_t Y, boolean ne
 	}
 }
 
-void Display::drawBitmap(const byte *bitmapArray, int16_t X, int16_t Y, int16_t width = 8, int16_t height = 8, boolean negative = false, boolean inverted = false, uint8_t scale = 1) {
+void Display::drawBitmap(const byte *bitmapArray, int16_t X, int16_t Y, int16_t width, int16_t height, boolean negative, boolean inverted, uint8_t scale) {
 	uint8_t startX = max(0,X/8);
 	uint8_t startY = max(0,Y/8);
 
@@ -729,7 +764,7 @@ void Display::renderChar(uint16_t index, uint8_t bufX, uint8_t bufY) {
 	renderChar(pChar, startX, startY, height, negative, inverted, bufX, bufY);
 }
 
-void Display::renderChar(uint8_t givenChar, int16_t x, int16_t y, uint8_t height, boolean negative, boolean inverted, uint8_t bufX = 255, uint8_t bufY = 255) {
+void Display::renderChar(uint8_t givenChar, int16_t x, int16_t y, uint8_t height, boolean negative, boolean inverted, uint8_t bufX, uint8_t bufY) {
 	uint8_t width = charWidth(givenChar);
 
 	// Ignore unused ASCCII characters

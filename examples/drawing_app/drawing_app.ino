@@ -1,6 +1,4 @@
 #include <Ease_OLED_I2C_128x64_Monochrome.h>
-#include <Wire.h>
-#include <avr/pgmspace.h>
 
 // Buttons, connected to digital inputs as listed below
 #define UP 4
@@ -45,46 +43,13 @@ void setup() {
 	lcd.rotateDisplay180(); // optional
 
 	// TOP HEADER
-	DrawingObj header;
-	header.data.register0 = RECTFILL_T | VISIBLE;
-	header.data.x = 8;
-	header.data.y = 0;
-	header.data.w = 112; // width
-	header.data.v = 16; // height
-	lcd.addObj(header);
-
-	DrawingObj headerL;
-	headerL.data.register0 = ELLIPSEFILL_T | VISIBLE;
-	headerL.data.x = 0;
-	headerL.data.y = 0;
-	headerL.data.w = 16; // width
-	headerL.data.v = 16; // height
-	lcd.addObj(headerL);
-
-	DrawingObj headerR;
-	headerR.data.register0 = ELLIPSEFILL_T | VISIBLE;
-	headerR.data.x = 112;
-	headerR.data.y = 0;
-	headerR.data.w = 16; // width
-	headerR.data.v = 16; // height
-	lcd.addObj(headerR);
+	lcd.addObj(RECTFILL_T | VISIBLE, 8, 0, 112, 16);
+	lcd.addObj(ELLIPSEFILL_T | VISIBLE, 0, 0, 16, 16); // header L
+	lcd.addObj(ELLIPSEFILL_T | VISIBLE, 112, 0, 16, 16); // header R
 
 	// DRAWING AREA
-	DrawingObj border;
-	border.data.register0 = RECTFILL_T | VISIBLE;
-	border.data.x = 18;
-	border.data.y = 19;
-	border.data.w = 45; // width
-	border.data.v = 45; // height
-	lcd.addObj(border);
-
-	DrawingObj stage;
-	stage.data.register0 = RECTFILL_T | NEGATIVE;
-	stage.data.x = 20;
-	stage.data.y = 21;
-	stage.data.w = 41; // width
-	stage.data.v = 41; // height
-	lcd.addObj(stage);
+	lcd.addObj(RECTFILL_T | VISIBLE, 18, 19, 45, 45);
+	lcd.addObj(RECTFILL_T | NEGATIVE, 20, 21, 41, 41);
 
 	// NEGATIVE PREVIEW
 	DrawingObj double_neg_bg;
@@ -137,13 +102,7 @@ void setup() {
 	}
 
 	// cursor on top of all
-	DrawingObj _cursor;
-	_cursor.data.register0 = RECT_T | INVERTED;
-	_cursor.data.x = 20 + cursor_x * 5;
-	_cursor.data.y = 21 + cursor_y * 5;
-	_cursor.data.w = 6; // width
-	_cursor.data.v = 6; // height
-	cursor_index = lcd.addObj(_cursor);
+	cursor_index = lcd.addObj(RECT_T | INVERTED, 20 + cursor_x * 5, 21 + cursor_y * 5, 6, 6);
 
 	lcd.draw();
 

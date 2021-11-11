@@ -1,6 +1,4 @@
 #include <Ease_OLED_I2C_128x64_Monochrome.h>
-#include <Wire.h>
-#include <avr/pgmspace.h>
 
 DrawingObj objs[16]; // up to 16 objects can be on screen
 Display lcd(objs, 16);
@@ -19,19 +17,8 @@ void setup() {
 	lcd.init(true);
 	lcd.rotateDisplay180(); // optional
 
-	DrawingObj hello;
-	hello.data.register0 = TEXT_T | INVERTED;
-	hello.data.x = 4;
-	hello.data.y = 20;
-	hello.data.v = 0; // string_table index, see: Ease_OLED_I2C_128x64_Strings.h
-	hello_index = lcd.addObj(hello); // pass in DrawingObj, values copied to 1st available, returns index
-
-	DrawingObj world;
-	world.data.register0 = TEXT_T | INVERTED;
-	world.data.x = 5;
-	world.data.y = 28;
-	world.data.v = 1; // string_table index, see: Ease_OLED_I2C_128x64_Strings.h
-	world_index = lcd.addObj(world); // pass in DrawingObj, values copied to 1st available, returns index
+	hello_index = lcd.addObj(TEXT_T | INVERTED, 4, 20, 0, 0); // register, x, y, w, string_table index: see Ease_OLED_I2C_128x64_Strings.h
+	world_index = lcd.addObj(TEXT_T | INVERTED, 5, 28, 0, 1); // register, x, y, w, string_table index
 
 	lcd.draw();
 }

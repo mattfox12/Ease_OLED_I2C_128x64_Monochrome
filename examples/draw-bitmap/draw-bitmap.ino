@@ -1,6 +1,4 @@
 #include <Ease_OLED_I2C_128x64_Monochrome.h>
-#include <Wire.h>
-#include <avr/pgmspace.h>
 
 DrawingObj objs[16]; // up to 16 objects can be on screen
 Display lcd(objs, 16);
