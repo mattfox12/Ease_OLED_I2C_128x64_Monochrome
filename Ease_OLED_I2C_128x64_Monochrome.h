@@ -61,6 +61,7 @@
 #define TEXT_T 0x07
 #define BITMAP_T 0x08
 #define HEXAGON_T 0x09
+#define INVISIBLE 0x00 // bit 5 & 6
 #define VISIBLE 0x20 // bit 5
 #define NEGATIVE 0x40 // bit 6
 #define INVERTED 0x60 // bit 5 & 6
